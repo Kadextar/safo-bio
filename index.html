@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Safo Restaurant — by Zarra Resort</title>
+  <meta name="description" content="Safo Restaurant — ресторан на территории горного резорта Zarra Resort в Самарканде. Ежедневно с 11:00 до 23:00. Бронирование столиков, меню, Telegram, Instagram." />
+
+  <!-- Favicon / иконки -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="assets/favicon-16.png" sizes="16x16" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Safo Restaurant" />
+  <meta property="og:locale" content="ru_RU" />
+  <meta property="og:title" content="Safo Restaurant — by Zarra Resort" />
+  <meta property="og:description" content="Ресторан на территории резорта Zarra Resort. Ежедневно 11:00–23:00. Бронирование, меню, Telegram, Instagram." />
+  <meta property="og:image" content="https://safo-restaurant.netlify.app/assets/og-safo.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://safo-restaurant.netlify.app/" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Safo Restaurant — by Zarra Resort" />
+  <meta name="twitter:description" content="Ресторан на территории резорта Zarra Resort. Ежедневно 11:00–23:00." />
+  <meta name="twitter:image" content="https://safo-restaurant.netlify.app/assets/og-safo.jpg" />
+
+  <meta name="theme-color" content="#0E2338" />
+
+  <!-- Веб-шрифты: Manrope + Playfair Display, вшиты локально (работают офлайн, без внешних запросов) -->
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+
+  <style>
+    :root{
+      --navy:#0E2338;
+      --navy-deep:#081525;
+      --orange:#F08C00;
+      --orange-bright:#FF9E1B;
+      --orange-soft:rgba(240,140,0,.40);
+      --orange-line:rgba(240,140,0,.34);
+      --cream:#F4F1EC;
+      --cream-dim:rgba(244,241,236,.62);
+      --card:rgba(255,255,255,.055);
+      --card-press:rgba(0,0,0,.22);
+      --display:"Playfair Display", Georgia, "Times New Roman", serif;
+      --serif:"Playfair Display", Georgia, serif;
+      --sans:"Manrope", -apple-system, "Helvetica Neue", Arial, system-ui, sans-serif;
+    }
+
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;}
+
+    body{
+      background:var(--navy);
+      color:var(--cream);
+      font-family:var(--sans);
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      min-height:100vh;
+    }
+
+    /* Центрированная колонка: mobile-first, аккуратно на десктопе */
+    .page{
+      max-width:480px;
+      margin:0 auto;
+      min-height:100vh;
+      background:var(--navy);
+      position:relative;
+      overflow:hidden;
+      /* мягкий боковой контур на широких экранах */
+      box-shadow:0 0 0 1px rgba(232,132,60,.07);
+    }
+
+    /* ---------- Переключатель языков ---------- */
+    .langbar{
+      position:absolute;
+      top:calc(12px + env(safe-area-inset-top));
+      right:14px;
+      z-index:6;
+      display:flex;
+      gap:2px;
+      padding:3px;
+      background:rgba(8,21,37,.5);
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:100px;
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      box-shadow:0 4px 14px rgba(0,0,0,.28);
+    }
+    .lang-btn{
+      border:0;
+      background:transparent;
+      color:var(--cream);
+      font-family:var(--sans);
+      font-size:11.5px;
+      font-weight:700;
+      letter-spacing:.5px;
+      padding:5px 10px;
+      border-radius:100px;
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+      transition:background .16s ease, color .16s ease;
+    }
+    .lang-btn.active{background:var(--orange);color:#0E2338;}
+
+    /* ---------- Шапка с фото ---------- */
+    .hero{
+      position:relative;
+      width:100%;
+      height:250px;
+      overflow:hidden;
+    }
+    .hero-photo{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center 38%;
+      display:block;
+    }
+    /* лёгкая верхняя виньетка для глубины */
+    .hero::before{
+      content:"";
+      position:absolute;inset:0;
+      background:linear-gradient(to bottom, rgba(8,21,37,.30), rgba(8,21,37,0) 42%);
+      pointer-events:none;
+      z-index:1;
+    }
+    /* градиентный переход фото в изумрудный фон */
+    .hero-fade{
+      position:absolute;
+      left:0;right:0;bottom:-1px;
+      height:150px;
+      background:linear-gradient(to bottom, rgba(14,35,56,0) 0%, rgba(14,35,56,.5) 48%, var(--navy) 100%);
+      pointer-events:none;
+      z-index:1;
+    }
+
+    /* ---------- Логотип ---------- */
+    .logo-wrap{
+      display:flex;
+      justify-content:center;
+      margin-top:-64px;
+      position:relative;
+      z-index:2;
+      padding:0 24px;
+    }
+    .logo{
+      width:100%;
+      max-width:252px;
+      height:auto;
+      filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));
+    }
+    /* скрыто визуально, но доступно скринридерам/поисковикам */
+    .sr-only{
+      position:absolute;width:1px;height:1px;
+      padding:0;margin:-1px;overflow:hidden;
+      clip:rect(0,0,0,0);white-space:nowrap;border:0;
+    }
+
+    /* ---------- Заголовки ---------- */
+    .head{
+      text-align:center;
+      padding:6px 26px 4px;
+    }
+    .title{
+      font-family:var(--serif);
+      font-weight:400;
+      font-size:29px;
+      letter-spacing:.5px;
+      margin:0;
+    }
+    .subtitle{
+      font-family:var(--serif);
+      font-style:italic;
+      color:var(--orange);
+      font-size:16px;
+      margin:7px 0 0;
+      letter-spacing:.3px;
+    }
+    .status{
+      font-family:var(--sans);
+      font-size:11.5px;
+      font-weight:600;
+      letter-spacing:1.6px;
+      text-transform:uppercase;
+      color:var(--cream);
+      margin:14px 0 0;
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      padding:8px 16px 8px 13px;
+      border:1px solid var(--orange-line);
+      border-radius:100px;
+      background:rgba(240,140,0,.08);
+    }
+    .status .dot{
+      position:relative;
+      width:8px;height:8px;border-radius:50%;
+      background:var(--orange);
+      flex:0 0 auto;
+    }
+    .status .dot::after{
+      content:"";
+      position:absolute;inset:0;border-radius:50%;
+      background:var(--orange);
+      animation:pulse 2s ease-out infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1);opacity:.6;}
+      70%{transform:scale(2.6);opacity:0;}
+      100%{opacity:0;}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .status .dot::after{animation:none;}
+    }
+    /* состояния «открыто / закрыто» (проставляются из JS) */
+    .status.is-open{border-color:rgba(55,200,113,.38);background:rgba(55,200,113,.09);}
+    .status.is-open .dot,
+    .status.is-open .dot::after{background:#37C871;}
+    .status.is-closed{border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.04);color:var(--cream-dim);}
+    .status.is-closed .dot{background:#9aa3ab;}
+    .status.is-closed .dot::after{animation:none;opacity:0;}
+
+    /* Тонкая оранжевая линия-разделитель */
+    .divider{
+      width:52px;height:1px;
+      background:linear-gradient(90deg, transparent, var(--orange), transparent);
+      margin:20px auto 6px;
+      border:0;
+      opacity:.9;
+    }
+
+    /* ---------- Кнопки-ссылки ---------- */
+    .links{
+      padding:14px 22px 6px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .btn{
+      display:flex;
+      align-items:center;
+      gap:13px;
+      width:100%;
+      padding:13px 15px;
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      color:var(--cream);
+      text-decoration:none;
+      -webkit-tap-highlight-color:transparent;
+      box-shadow:0 4px 14px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.06);
+      transition:border-color .18s ease, transform .08s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .btn:active{
+      background:var(--card-press);
+      border-color:var(--orange-line);
+      transform:scale(.985);
+    }
+    .btn:active .ic{transform:scale(.9);}
+    @media (hover:hover){
+      .btn:hover{
+        border-color:var(--orange-soft);
+        transform:translateY(-2px);
+        box-shadow:0 10px 24px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.08);
+      }
+      .btn:hover .ic{
+        transform:scale(1.06);
+        background:rgba(240,140,0,.18);
+        border-color:rgba(240,140,0,.34);
+      }
+      .btn:hover .chev{transform:translateX(3px);color:var(--orange);}
+    }
+    /* иконка в «чипе» */
+    .btn .ic{
+      flex:0 0 auto;
+      width:42px;height:42px;border-radius:12px;
+      color:var(--orange);
+      background:rgba(240,140,0,.12);
+      border:1px solid rgba(240,140,0,.22);
+      display:flex;align-items:center;justify-content:center;
+      transition:transform .18s cubic-bezier(.22,.61,.36,1), background .18s ease, border-color .18s ease;
+    }
+    .btn .ic svg{width:22px;height:22px;display:block;}
+    .btn .tx{
+      flex:1 1 auto;
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+    .btn .lbl{
+      font-size:15px;
+      font-weight:700;
+      letter-spacing:.1px;
+      line-height:1.2;
+    }
+    .btn .sub{
+      font-size:12.5px;
+      font-weight:500;
+      color:var(--cream-dim);
+      letter-spacing:.2px;
+    }
+    .btn .chev{
+      flex:0 0 auto;
+      color:var(--orange-soft);
+      transition:transform .2s cubic-bezier(.22,.61,.36,1), color .18s ease;
+    }
+
+    /* Главная кнопка (бронь) — заливная яркая оранжевая */
+    .btn--primary{
+      background:linear-gradient(135deg, var(--orange-bright), var(--orange));
+      border-color:transparent;
+      box-shadow:0 12px 28px rgba(240,140,0,.34), inset 0 1px 0 rgba(255,255,255,.25);
+    }
+    .btn--primary .lbl{color:#0E2338;}
+    .btn--primary .sub{color:rgba(14,35,56,.80);}
+    .btn--primary .ic{
+      color:#0E2338;
+      background:rgba(14,35,56,.14);
+      border-color:rgba(14,35,56,.18);
+    }
+    .btn--primary .chev{color:rgba(14,35,56,.55);}
+    .btn--primary:active{
+      background:linear-gradient(135deg, var(--orange), #D97D00);
+      border-color:transparent;
+    }
+    @media (hover:hover){
+      .btn--primary:hover{border-color:transparent;filter:brightness(1.04);box-shadow:0 14px 32px rgba(240,140,0,.40), inset 0 1px 0 rgba(255,255,255,.25);}
+    }
+
+    /* ---------- Инфо-блок «территория резорта» ---------- */
+    .promo{
+      margin:20px 22px 4px;
+      padding:18px 18px 16px;
+      border:1px solid var(--orange-line);
+      border-radius:18px;
+      background:linear-gradient(160deg, rgba(232,132,60,.08), rgba(244,241,236,.02));
+      text-align:center;
+    }
+    .promo .p-title{
+      font-family:var(--display);
+      font-weight:600;
+      font-size:18px;
+      line-height:1.3;
+      margin:0 0 5px;
+    }
+    .promo .p-text{
+      font-size:12px;
+      font-weight:500;
+      text-transform:uppercase;
+      letter-spacing:1.4px;
+      color:var(--orange);
+      margin:0 0 15px;
+      line-height:1.5;
+    }
+    .promo .p-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      padding:11px 20px;
+      border:1px solid var(--orange);
+      border-radius:14px;
+      color:var(--orange);
+      text-decoration:none;
+      font-size:13.5px;
+      font-weight:700;
+      letter-spacing:.4px;
+      transition:background .18s ease;
+    }
+    .promo .p-btn:active{background:rgba(232,132,60,.14);}
+    .promo .p-btn svg{width:16px;height:16px;}
+
+    /* ---------- Футер ---------- */
+    .foot{
+      text-align:center;
+      padding:26px 26px calc(30px + env(safe-area-inset-bottom));
+      font-size:11.5px;
+      line-height:1.6;
+      letter-spacing:.3px;
+      color:rgba(244,241,236,.4);
+    }
+    .foot .fdiv{
+      width:40px;height:1px;
+      background:var(--orange-line);
+      margin:0 auto 16px;
+    }
+
+    /* ---------- Анимация появления (fade + slide up) ---------- */
+    @keyframes rise{
+      from{opacity:0;transform:translateY(14px);}
+      to{opacity:1;transform:translatey(0);}
+    }
+    .anim{
+      opacity:0;
+      animation:rise .6s cubic-bezier(.22,.61,.36,1) both;
+    }
+    @media (prefers-reduced-motion:reduce){
+      .anim{animation:none;opacity:1;}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <!-- ======= ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКОВ ======= -->
+    <div class="langbar" role="group" aria-label="Язык / Language">
+      <button class="lang-btn" data-lang="ru" type="button">RU</button>
+      <button class="lang-btn" data-lang="uz" type="button">UZ</button>
+      <button class="lang-btn" data-lang="en" type="button">EN</button>
+    </div>
+
+    <!-- ======= ШАПКА: фото резорта ======= -->
+    <header class="hero">
+      <img class="hero-photo" src="assets/hero.jpg"
+           alt="Safo Restaurant — терраса, коттеджи и горы, Zarra Resort"
+           width="1200" height="632" />
+      <div class="hero-fade"></div>
+    </header>
+
+    <!-- ======= ЛОГОТИП ======= -->
+    <div class="logo-wrap">
+      <img class="logo anim" style="animation-delay:.05s"
+           src="assets/logo-safo.png" alt="Safo — by Zarra Resort"
+           width="252" height="216" />
+    </div>
+
+    <!-- ======= СТАТУС ======= -->
+    <section class="head">
+      <h1 class="sr-only">Safo Restaurant — by Zarra Resort</h1>
+      <p class="status anim" id="status" style="animation-delay:.16s"><span class="dot" id="status-dot"></span><span id="status-text">Ежедневно&nbsp;11:00–23:00</span></p>
+      <hr class="divider anim" style="animation-delay:.22s" />
+    </section>
+
+    <!-- ======= КНОПКИ-ССЫЛКИ ======= -->
+    <!-- ВНИМАНИЕ: перед публикацией открыть каждую ссылку с телефона и проверить,
+         что попадаешь в нужный профиль. Особенно @safo.restaurant_ (точка + подчёркивание в конце). -->
+    <nav class="links">
+
+      <!-- 1. Забронировать столик -->
+      <a class="btn btn--primary anim" style="animation-delay:.34s" href="tel:+998875943330">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.7 2 2 0 0 1 6.5 3.5Z"/>
+          </svg>
+        </span>
+        <span class="tx">
+          <span class="lbl" data-i18n="book_lbl">Забронировать столик</span>
+          <span class="sub">+998 87 594 33 30</span>
+        </span>
+        <span class="chev" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <!-- 2. Меню -->
+      <a class="btn anim" style="animation-delay:.37s" href="menu/">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3v18"/>
+            <path d="M5 3v4a2 2 0 0 0 4 0V3"/>
+            <path d="M17 3c-1.6 0-2.6 2-2.6 5s1 4 2.6 4"/>
+            <path d="M17 3v18"/>
+          </svg>
+        </span>
+        <span class="tx">
+          <span class="lbl" data-i18n="menu_lbl">Меню</span>
+          <span class="sub" data-i18n="menu_sub">Завтраки · мангал · стейки · десерты</span>
+        </span>
+        <span class="chev" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <!-- 3. Написать в Telegram -->
+      <a class="btn anim" style="animation-delay:.40s" href="https://t.me/SafoRestaurant" target="_blank" rel="noopener">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 4.5 2.8 11.4c-.9.34-.88 1.63.03 1.94l4.6 1.55 1.77 5.05c.27.77 1.28.9 1.74.22l2.35-3.4 4.6 3.4c.63.47 1.53.12 1.7-.65L21.98 5.6c.2-.9-.7-1.66-1.55-1.32Z"/>
+            <path d="M8 14.5 17 8l-6.4 7.2"/>
+          </svg>
+        </span>
+        <span class="tx">
+          <span class="lbl" data-i18n="tgw_lbl">Написать в Telegram</span>
+          <span class="sub">@SafoRestaurant</span>
+        </span>
+        <span class="chev" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <!-- 3. Telegram-канал -->
+      <a class="btn anim" style="animation-delay:.46s" href="https://t.me/safo_restaurant" target="_blank" rel="noopener">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 4.5 2.8 11.4c-.9.34-.88 1.63.03 1.94l4.6 1.55 1.77 5.05c.27.77 1.28.9 1.74.22l2.35-3.4 4.6 3.4c.63.47 1.53.12 1.7-.65L21.98 5.6c.2-.9-.7-1.66-1.55-1.32Z"/>
+            <path d="M8 14.5 17 8l-6.4 7.2"/>
+          </svg>
+        </span>
+        <span class="tx">
+          <span class="lbl" data-i18n="tgc_lbl">Telegram-канал ресторана</span>
+          <span class="sub">@safo_restaurant</span>
+        </span>
+        <span class="chev" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <!-- 4. Instagram -->
+      <a class="btn anim" style="animation-delay:.52s" href="https://instagram.com/safo.restaurant_" target="_blank" rel="noopener">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span class="tx">
+          <span class="lbl">Instagram</span>
+          <span class="sub">@safo.restaurant_</span>
+        </span>
+        <span class="chev" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <!-- 5. Как доехать -->
+      <a class="btn anim" style="animation-delay:.58s" href="https://maps.google.com/?q=Zarra+Hotel+%26+Resort+Samarkand" target="_blank" rel="noopener">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21s6.5-6 6.5-11a6.5 6.5 0 1 0-13 0C5.5 15 12 21 12 21Z"/>
+            <circle cx="12" cy="10" r="2.4"/>
+          </svg>
+        </span>
+        <span class="tx">
+          <span class="lbl" data-i18n="route_lbl">Как доехать</span>
+          <span class="sub" data-i18n="route_sub">Территория Zarra Resort · Самарканд</span>
+        </span>
+        <span class="chev" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <!-- 6. 2ГИС -->
+      <a class="btn anim" style="animation-delay:.61s" href="https://go.2gis.com/mncpa" target="_blank" rel="noopener">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3.5 11 20.5 4l-7 17-2.8-6.4L3.5 11Z"/>
+          </svg>
+        </span>
+        <span class="tx">
+          <span class="lbl" data-i18n="gis_lbl">Маршрут в 2ГИС</span>
+          <span class="sub" data-i18n="gis_sub">Открыть карту 2ГИС</span>
+        </span>
+        <span class="chev" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+      <!-- 7. Сохранить контакт (vCard) -->
+      <a class="btn anim" style="animation-delay:.64s" href="assets/safo.vcf" download="Safo-Restaurant.vcf">
+        <span class="ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2.5"/>
+            <circle cx="8.5" cy="11" r="2"/>
+            <path d="M5.5 16c.5-1.4 1.6-2.1 3-2.1s2.5.7 3 2.1"/>
+            <path d="M14.5 10h4M14.5 13.5h3"/>
+          </svg>
+        </span>
+        <span class="tx">
+          <span class="lbl" data-i18n="vcard_lbl">Сохранить контакт</span>
+          <span class="sub" data-i18n="vcard_sub">Добавить номер в телефон</span>
+        </span>
+        <span class="chev" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </span>
+      </a>
+
+    </nav>
+
+    <!-- ======= БЛОК: территория резорта ======= -->
+    <section class="promo anim" style="animation-delay:.70s">
+      <p class="p-title" data-i18n="promo_title">Ресторан находится на территории Zarra Resort</p>
+      <p class="p-text" data-i18n="promo_sub">Горный резорт · Самарканд</p>
+      <a class="p-btn" href="../">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 11l9-7 9 7"/><path d="M5 10v9h14v-9"/><path d="M10 19v-5h4v5"/>
+        </svg>
+        <span data-i18n="promo_btn">Страница резорта</span>
+      </a>
+    </section>
+
+    <!-- ======= ФУТЕР ======= -->
+    <footer class="foot anim" style="animation-delay:.78s">
+      <div class="fdiv"></div>
+      <span data-i18n="foot_addr">Самаркандская область, пос. Акбуйра</span><br />
+      © Safo Restaurant 2026
+    </footer>
+
+  </main>
+
+  <script>
+    // ===== Мультиязычность RU / UZ / EN + умный статус часов (11:00–23:00) =====
+    var I18N = {
+      ru: {
+        book_lbl:"Забронировать столик",
+        menu_lbl:"Меню", menu_sub:"Завтраки · мангал · стейки · десерты",
+        tgw_lbl:"Написать в Telegram", tgc_lbl:"Telegram-канал ресторана",
+        route_lbl:"Как доехать", route_sub:"Территория Zarra Resort · Самарканд",
+        gis_lbl:"Маршрут в 2ГИС", gis_sub:"Открыть карту 2ГИС",
+        vcard_lbl:"Сохранить контакт", vcard_sub:"Добавить номер в телефон",
+        promo_title:"Ресторан находится на территории Zarra Resort",
+        promo_sub:"Горный резорт · Самарканд", promo_btn:"Страница резорта",
+        foot_addr:"Самаркандская область, пос. Акбуйра",
+        st_open:"Открыто&nbsp;·&nbsp;сегодня до 23:00",
+        st_closed:"Закрыто&nbsp;·&nbsp;откроется в 11:00"
+      },
+      uz: {
+        book_lbl:"Stol band qilish",
+        menu_lbl:"Menyu", menu_sub:"Nonushta · mangal · steyk · shirinliklar",
+        tgw_lbl:"Telegramda yozish", tgc_lbl:"Restoran Telegram kanali",
+        route_lbl:"Qanday yetib borish", route_sub:"Zarra Resort hududi · Samarqand",
+        gis_lbl:"2GISda marshrut", gis_sub:"2GIS xaritasini ochish",
+        vcard_lbl:"Kontaktni saqlash", vcard_sub:"Raqamni telefonga qo‘shish",
+        promo_title:"Restoran Zarra Resort hududida joylashgan",
+        promo_sub:"Tog‘ resorti · Samarqand", promo_btn:"Resort sahifasi",
+        foot_addr:"Samarqand viloyati, Akbuyra qishlog‘i",
+        st_open:"Ochiq&nbsp;·&nbsp;bugun 23:00 gacha",
+        st_closed:"Yopiq&nbsp;·&nbsp;11:00 da ochiladi"
+      },
+      en: {
+        book_lbl:"Book a table",
+        menu_lbl:"Menu", menu_sub:"Breakfast · grill · steaks · desserts",
+        tgw_lbl:"Message on Telegram", tgc_lbl:"Restaurant Telegram channel",
+        route_lbl:"Get directions", route_sub:"Zarra Resort area · Samarkand",
+        gis_lbl:"Route in 2GIS", gis_sub:"Open 2GIS map",
+        vcard_lbl:"Save contact", vcard_sub:"Add number to phone",
+        promo_title:"The restaurant is located at Zarra Resort",
+        promo_sub:"Mountain resort · Samarkand", promo_btn:"Resort page",
+        foot_addr:"Samarkand region, Akbuyra village",
+        st_open:"Open&nbsp;·&nbsp;today until 23:00",
+        st_closed:"Closed&nbsp;·&nbsp;opens at 11:00"
+      }
+    };
+
+    function setLang(lang) {
+      var d = I18N[lang] || I18N.ru;
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var k = el.getAttribute('data-i18n');
+        if (d[k] != null) el.innerHTML = d[k];
+      });
+      // статус часов на выбранном языке
+      var st = document.getElementById('status');
+      var stx = document.getElementById('status-text');
+      if (st && stx) {
+        var now = new Date();
+        var h = now.getHours() + now.getMinutes() / 60;
+        var isOpen = h >= 11 && h < 23;
+        st.classList.remove('is-open', 'is-closed');
+        st.classList.add(isOpen ? 'is-open' : 'is-closed');
+        stx.innerHTML = isOpen ? d.st_open : d.st_closed;
+      }
+      document.querySelectorAll('.lang-btn').forEach(function (b) {
+        b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+      });
+      try { localStorage.setItem('safo_lang', lang); } catch (e) {}
+    }
+
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem('safo_lang'); } catch (e) {}
+      document.querySelectorAll('.lang-btn').forEach(function (b) {
+        b.addEventListener('click', function () { setLang(b.getAttribute('data-lang')); });
+      });
+      setLang(saved || 'ru');
+    })();
+  </script>
+</body>
+</html>

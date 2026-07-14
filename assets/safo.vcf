@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Restaurant;Safo;;;
+FN:Safo Restaurant
+ORG:Safo Restaurant (by Zarra Resort)
+TEL;TYPE=CELL,VOICE:+998875943330
+URL;TYPE=Telegram:https://t.me/SafoRestaurant
+URL;TYPE=Instagram:https://instagram.com/safo.restaurant_
+ADR;TYPE=WORK:;;пос. Акбуйра;Самаркандская область;;;Узбекистан
+NOTE:Ресторан на территории Zarra Resort. Ежедневно с 11:00 до 23:00.
+END:VCARD
