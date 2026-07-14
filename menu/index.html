@@ -1186,6 +1186,7 @@
     });
 
     function updateCart() {
+      if (!selectedItems) selectedItems = {}; // защита: setLang() может вызвать updateCart до инициализации
       var count = Object.keys(selectedItems).length;
       var total = 0;
       for (var name in selectedItems) {
