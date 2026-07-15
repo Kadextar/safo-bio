@@ -75,6 +75,10 @@
       z-index:0;
       pointer-events:none;
       overflow:hidden;
+      /* свой GPU-слой: иначе мобильный Chrome перерисовывает фон на каждом
+         кадре скролла и «роняет» отрисовку кнопок */
+      transform:translateZ(0);
+      contain:paint;
     }
     .bg-lines svg{width:100%;height:100%;display:block;}
     .bg-lines path{
@@ -83,8 +87,10 @@
       stroke-width:1.05;
       vector-effect:non-scaling-stroke;
     }
-    .ln--a{opacity:.60;transform-origin:50% 50%;animation:drift-a 26s ease-in-out infinite alternate;}
-    .ln--b{opacity:.42;transform-origin:50% 50%;animation:drift-b 34s ease-in-out infinite alternate;}
+    .ln--a{opacity:.60;transform-origin:50% 50%;animation:drift-a 26s ease-in-out infinite alternate;
+      will-change:transform;backface-visibility:hidden;}
+    .ln--b{opacity:.42;transform-origin:50% 50%;animation:drift-b 34s ease-in-out infinite alternate;
+      will-change:transform;backface-visibility:hidden;}
     @keyframes drift-a{
       from{transform:translate3d(-6%,-4%,0) scale(1.00) rotate(-3deg);}
       to  {transform:translate3d(7%,5%,0)  scale(1.18) rotate(4deg);}
@@ -676,6 +682,15 @@
   </main>
 
   <script>
+    // Подстраховка: после появления снимаем .anim, чтобы opacity:0 не мог
+    // «залипнуть» из-за особенностей отрисовки на мобильных.
+    setTimeout(function () {
+      document.querySelectorAll('.anim').forEach(function (el) {
+        el.classList.remove('anim');
+        el.style.opacity = '1';
+      });
+    }, 2000);
+
     // ===== Мультиязычность RU / UZ / EN + умный статус часов (11:00–23:00) =====
     var I18N = {
       ru: {
