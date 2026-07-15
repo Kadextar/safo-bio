@@ -86,8 +86,14 @@
       transition:all .18s ease;font-weight:700;font-size:14px;user-select:none;}
     .item.selected .i-btn{background:var(--gold-deep);color:#fff;border-color:var(--gold-deep);transform:scale(1.08);}
 
-    .cat--compact .items{display:grid;grid-template-columns:1fr 1fr;column-gap:16px;}
-    @media (max-width:360px){.cat--compact .items{grid-template-columns:1fr;}}
+    /* Соусы: на телефоне — одна колонка. Две только когда реально хватает
+       места: 1fr не сжимается уже своего содержимого (~190px на строку:
+       название + неразрывная цена + кнопка), поэтому на узком экране две
+       колонки распирали страницу и уводили её вбок. */
+    .cat--compact .items{display:grid;grid-template-columns:minmax(0,1fr);column-gap:16px;}
+    @media (min-width:450px){
+      .cat--compact .items{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
+    }
 
     .cta-wrap{padding:28px 22px 4px;}
     .cta{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;border-radius:16px;
