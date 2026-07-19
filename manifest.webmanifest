@@ -1,10 +1,10 @@
 {
-  "name": "Safo Restaurant — меню",
+  "name": "Safo Restaurant",
   "short_name": "Safo",
-  "description": "Меню ресторана Safo на территории резорта Zarra Resort, Самарканд. Ежедневно 11:00–23:00.",
+  "description": "Ресторан Safo на территории резорта Zarra Resort, Самарканд: меню, бронирование столика, контакты и маршрут. Ежедневно 11:00–23:00.",
   "lang": "ru",
   "dir": "ltr",
-  "start_url": "./menu/",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
