@@ -29,7 +29,18 @@
   <meta name="twitter:description" content="Ресторан на территории резорта Zarra Resort. Ежедневно 11:00–23:00." />
   <meta name="twitter:image" content="https://safo-bio.netlify.app/assets/og-safo.jpg" />
 
+
   <meta name="theme-color" content="#EEE5D4" />
+
+  <link rel="manifest" href="./manifest.webmanifest" />
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+  <meta name="apple-mobile-web-app-title" content="Safo" />
+
+  <meta name="application-name" content="Safo" />
 
   <!-- Веб-шрифты: Manrope + Playfair Display, вшиты локально (работают офлайн, без внешних запросов) -->
   <link rel="stylesheet" href="assets/fonts/fonts.css" />
@@ -766,6 +777,16 @@
       });
       setLang(saved || 'ru');
     })();
+  </script>
+
+  <script>
+    // PWA: меню открывается офлайн и ставится на домашний экран
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./sw.js', { scope: './' })
+          .catch(function () { /* офлайн-режим просто не включится */ });
+      });
+    }
   </script>
 </body>
 </html>

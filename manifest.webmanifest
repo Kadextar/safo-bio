@@ -1,0 +1,32 @@
+{
+  "name": "Safo Restaurant — меню",
+  "short_name": "Safo",
+  "description": "Меню ресторана Safo на территории резорта Zarra Resort, Самарканд. Ежедневно 11:00–23:00.",
+  "lang": "ru",
+  "dir": "ltr",
+  "start_url": "./menu/",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EEE5D4",
+  "theme_color": "#EEE5D4",
+  "categories": ["food", "lifestyle"],
+  "icons": [
+    { "src": "assets/pwa-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/pwa-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/pwa-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Меню",
+      "short_name": "Меню",
+      "url": "./menu/",
+      "icons": [{ "src": "assets/pwa-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Забронировать столик",
+      "short_name": "Бронь",
+      "url": "./#book"
+    }
+  ]
+}
