@@ -2,7 +2,7 @@
    Меню должно открываться у гостя даже при слабом Wi-Fi в горах,
    поэтому оболочку и картинки держим в кэше. */
 
-const VERSION = 'safo-v4';
+const VERSION = 'safo-v5';
 const CORE = `${VERSION}-core`;
 const RUNTIME = `${VERSION}-runtime`;
 

@@ -1345,6 +1345,7 @@
       
       searchInput.addEventListener('input', function() {
         triggerSearch(searchInput.value);
+        if (searchInput.value.length > 2) track('search', searchInput.value.toLowerCase());
       });
       
       function triggerSearch(val) {
@@ -1403,6 +1404,7 @@
         
         // короткий тактильный отклик — ощущается дороже (в iOS Safari не поддерживается)
         if (navigator.vibrate) navigator.vibrate(12);
+        track(itemEl.classList.contains('selected') ? 'dish_remove' : 'dish_add', originName);
 
         if (itemEl.classList.contains('selected')) {
           itemEl.classList.remove('selected');
@@ -1473,6 +1475,7 @@
     var cartClearBtn = document.getElementById('cart-modal-clear');
 
     cartViewBtn.addEventListener('click', function() {
+      track('order_open', String(Object.keys(selectedItems || {}).length));
       cartModal.classList.add('active');
     });
 
@@ -1503,6 +1506,59 @@
         img.addEventListener('load', function () { img.classList.add('is-loaded'); }, { once: true });
         img.addEventListener('error', function () { img.classList.add('is-loaded'); }, { once: true });
       });
+    })();
+
+
+    // ===== Аналитика =====
+    // Слой событий. Сейчас копит статистику локально (проверить: safoStats() в консоли).
+    // Чтобы данные собирались централизованно — впишите endpoint сервиса в ANALYTICS_URL.
+    var ANALYTICS_URL = ''; // напр. 'https://ваш-сборщик/collect'
+    var track = (function () {
+      var KEY = 'safo_stats';
+      function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+      function save(s) { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {} }
+      return function (event, label) {
+        // локальный счётчик
+        var s = load(), k = event + (label ? '::' + label : '');
+        s[k] = (s[k] || 0) + 1;
+        save(s);
+        // отправка в сервис, если подключён (не блокирует страницу)
+        if (ANALYTICS_URL && navigator.sendBeacon) {
+          try {
+            navigator.sendBeacon(ANALYTICS_URL, JSON.stringify({
+              event: event, label: label || null, ts: Date.now(),
+              lang: document.documentElement.lang || 'ru'
+            }));
+          } catch (e) {}
+        }
+      };
+    })();
+
+    // посмотреть накопленное: safoStats()
+    window.safoStats = function () {
+      var s = {};
+      try { s = JSON.parse(localStorage.getItem('safo_stats')) || {}; } catch (e) {}
+      return Object.keys(s).map(function (k) { return { что: k, раз: s[k] }; })
+                   .sort(function (a, b) { return b.раз - a.раз; });
+    };
+
+    // какие блюда реально досматривают до конца
+    (function () {
+      if (!('IntersectionObserver' in window)) return;
+      var seen = {};
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          var nm = en.target.querySelector('.i-name');
+          if (!nm) return;
+          var name = (nm.getAttribute('data-origin') || nm.textContent).trim();
+          if (seen[name]) return;
+          seen[name] = 1;
+          track('dish_view', name);
+          io.unobserve(en.target);
+        });
+      }, { threshold: 0.6 });
+      document.querySelectorAll('.item').forEach(function (el) { io.observe(el); });
     })();
 
     // ===== Кнопка «наверх» =====
