@@ -110,79 +110,57 @@
     .cat-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent);opacity:.6;}
     .cat-em{font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin:0 0 14px;font-weight:600;}
 
-    .item{display:flex;align-items:center;gap:12px;padding:9px 8px;border-bottom:1px solid rgba(201,169,97,.25);
-      cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .16s ease, padding .16s ease;border-radius:8px;}
+    /* ---- Карточка блюда: фото крупно, иерархия название → описание → цена ---- */
+    .item{
+      display:flex; align-items:flex-start; gap:14px;
+      padding:14px 10px; border-bottom:1px solid rgba(201,169,97,.20);
+      cursor:default; -webkit-tap-highlight-color:transparent;
+      border-radius:14px; transition:background .16s ease;
+    }
     .item:last-child{border-bottom:0;}
-    .item.selected{background:rgba(201,169,97,.08);padding-left:12px;padding-right:12px;}
-    .i-txt{flex:1 1 auto;display:flex;align-items:baseline;gap:8px;min-width:0;}
-    .i-name{font-size:14.5px;font-weight:600;letter-spacing:.1px;line-height:1.28;}
-    .i-lead{flex:1 1 auto;border-bottom:1px dotted rgba(43,33,24,.26);transform:translateY(-3px);min-width:14px;}
-    .i-price{flex:0 0 auto;font-size:14px;font-weight:700;color:var(--gold-deep);white-space:nowrap;}
-    
-
-    .i-share{
-      flex:0 0 auto; width:30px; height:30px; border-radius:8px;
-      display:flex; align-items:center; justify-content:center;
-      border:1px solid var(--gold-line); background:transparent;
-      color:var(--gold-deep); cursor:pointer; -webkit-tap-highlight-color:transparent;
-      transition:background .16s ease, transform .1s ease;
-    }
-    .i-share:active{transform:scale(.9); background:var(--card-press);}
-    .i-share svg{width:15px;height:15px;}
-
-
-    .i-desc{
-      display:block; font-size:11.5px; font-weight:500; line-height:1.35;
-      color:var(--ink-dim); margin-top:3px;
-    }
-    @media (max-width:400px){ .item.has-photo .i-desc{width:100%;} }
-
-    .i-btn{flex:0 0 auto;width:24px;height:24px;border-radius:6px;border:1px solid rgba(201,169,97,.26);
-      background:rgba(201,169,97,.08);color:var(--gold);display:flex;align-items:center;justify-content:center;
-      transition:all .18s ease;font-weight:700;font-size:14px;user-select:none;}
-    .item.selected .i-btn{background:var(--gold-deep);color:#fff;border-color:var(--gold-deep);transform:scale(1.08);}
-
-    /* Соусы: на телефоне — одна колонка. Две только когда реально хватает
-       места: 1fr не сжимается уже своего содержимого (~190px на строку:
-       название + неразрывная цена + кнопка), поэтому на узком экране две
-       колонки распирали страницу и уводили её вбок. */
-
-
-    /* скелетон: мерцание в рамке, пока фото не загрузилось */
-    @keyframes shimmer{ from{background-position:200% 0;} to{background-position:-200% 0;} }
-    .i-thumb, .cat-hero img{
-      background-image:linear-gradient(100deg,
-        var(--bg-soft) 28%, rgba(255,255,255,.9) 48%, var(--bg-soft) 68%);
-      background-size:200% 100%;
-      background-color:var(--bg-soft);
-      animation:shimmer 1.3s linear infinite;
-    }
-    .i-thumb.is-loaded, .cat-hero img.is-loaded{
-      animation:none; background-image:none;
-    }
-    @media (prefers-reduced-motion:reduce){
-      .i-thumb, .cat-hero img{animation:none;}
-    }
-
-    /* фото блюда в строке меню */
+    .item.selected{background:rgba(201,169,97,.10);}
     .i-thumb{
-      flex:0 0 auto; width:64px; height:64px; border-radius:14px;
+      flex:0 0 auto; width:88px; height:88px; border-radius:16px;
       object-fit:cover; display:block; cursor:zoom-in;
-      border:1px solid var(--gold-line);
-      background:var(--bg-soft);
-      box-shadow:0 2px 8px rgba(43,33,24,.10);
-      transition:transform .18s cubic-bezier(.22,.61,.36,1), box-shadow .18s ease;
+      border:1px solid var(--gold-line); background:var(--bg-soft);
+      box-shadow:0 3px 12px rgba(43,33,24,.12);
+      transition:transform .18s cubic-bezier(.22,.61,.36,1);
     }
-    .i-thumb:active{transform:scale(.94);}
-    @media (hover:hover){ .i-thumb:hover{transform:scale(1.06);box-shadow:0 6px 16px rgba(43,33,24,.20);} }
-    .item.has-photo{padding-top:8px;padding-bottom:8px;}
-    @media (max-width:400px){
-      .item.has-photo .i-txt{flex-wrap:wrap;}
-      .item.has-photo .i-lead{display:none;}
-      .item.has-photo .i-price{width:100%;margin-top:2px;}
+    .i-thumb:active{transform:scale(.95);}
+    .i-txt{flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:3px;}
+    .i-name{font-size:15px; font-weight:700; line-height:1.25; letter-spacing:.1px;}
+    .i-desc{
+      font-size:12px; font-weight:500; line-height:1.4; color:var(--ink-dim);
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
     }
-    /* строки без фото выравниваем под те, что с фото */
-    .cat--compact .i-thumb{display:none;}
+    .i-price{font-size:15px; font-weight:700; color:var(--gold-deep); white-space:nowrap;}
+    /* цена и степпер — в одну строку внизу, чтобы название занимало всю ширину */
+    .i-foot{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:6px;}
+    .i-lead{display:none;}                       /* пунктир — приём печатного меню, тут лишний */
+
+    /* ---- Степпер количества ---- */
+    .i-qty{flex:0 0 auto; display:flex; align-items:center;}
+    .i-btn{
+      width:34px; height:34px; border-radius:11px;
+      border:1px solid var(--gold-line); background:var(--bg-soft); color:var(--gold-deep);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:19px; line-height:1; cursor:pointer; user-select:none;
+      -webkit-tap-highlight-color:transparent;
+      transition:transform .1s ease, background .16s ease;
+    }
+    .i-btn:active{transform:scale(.9);}
+    .i-stepper{
+      display:flex; align-items:center; gap:2px;
+      border:1px solid var(--gold-deep); border-radius:11px; background:var(--bg-soft);
+      overflow:hidden;
+    }
+    .i-stepper button{
+      width:32px; height:34px; border:0; background:transparent; color:var(--gold-deep);
+      font-size:19px; font-weight:700; line-height:1; cursor:pointer;
+      -webkit-tap-highlight-color:transparent; transition:background .14s ease;
+    }
+    .i-stepper button:active{background:var(--card-press);}
+    .i-count{min-width:24px; text-align:center; font-weight:800; font-size:14px; color:var(--ink);}
 
     .cat--compact .items{display:grid;grid-template-columns:minmax(0,1fr);column-gap:16px;}
     @media (min-width:450px){
@@ -888,6 +866,10 @@
           <strong id="cart-modal-sum">0 сум</strong>
         </div>
         <p class="cart-modal-tip" id="cart-modal-tip">Покажите этот список официанту для заказа</p>
+        <button class="cart-modal-share" id="cart-modal-share" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+          Поделиться заказом
+        </button>
         <button class="cart-modal-clear" id="cart-modal-clear">Сбросить всё</button>
       </div>
     </div>
@@ -1081,6 +1063,9 @@
       " сум": { uz: " so'm", en: " UZS" }
     };
 
+    // корзина объявляется здесь: карточки строятся раньше секции 5 и читают её
+    var selectedItems = {}; // { 'Название': { price, qty } }
+
     var DISH_PHOTOS = {"Омлет с сыром и томатами": "omlet-s-syrom-i-tomatami", "Глазунья из 3-х яиц": "glazunya-iz-3-h-yaic", "Рисовая каша с ягодами": "risovaya-kasha-s-yagodami", "Овсяная каша": "ovsyanaya-kasha", "Английский завтрак": "angliyskiy-zavtrak", "Французский завтрак": "francuzskiy-zavtrak", "Сырники с ягодным соусом": "syrniki-s-yagodnym-sousom", "Шакшука": "shakshuka", "Национальный завтрак-сет": "nacionalnyy-zavtrak-set", "Балтийский сет": "baltiyskiy-set", "Пивная доска": "pivnaya-doska", "Чесночные гренки": "chesnochnye-grenki", "Закуска к пиву": "zakuska-k-pivu", "Ассорти смёрребрёдов": "assorti-smerrebredov", "Свежая нарезка овощей": "svezhaya-narezka-ovoschey", "Домашние маринады": "domashnie-marinady", "Чакка": "chakka", "Язык телячий с соусом ромеско": "yazyk-telyachiy-s-sousom-romesko", "Казы": "kazy", "Сет брускет": "set-brusket", "Буррата с томатами и соусом песто": "burrata-s-tomatami-i-sousom-pesto", "Норвежский лосось с сальсой из манго": "norvezhskiy-losos-s-salsoy-iz-mango", "Вителло Тоннато": "vitello-tonnato", "Ассорти фермерских сыров": "assorti-fermerskih-syrov", "Микс свежих овощей с сыром фета": "miks-svezhih-ovoschey-s-syrom-feta", "Микс-салат с авокадо и тигровыми креветками": "miks-salat-s-avokado-i-tigrovymi-krevetk", "Большой зелёный салат": "bolshoy-zelenyy-salat", "Салатный микс с тунцом": "salatnyy-miks-s-tuncom", "Гриль-салат в печи Josper": "gril-salat-v-pechi-josper", "Цезарь с креветками": "cezar-s-krevetkami", "Цезарь с курицей": "cezar-s-kuricey", "Ачичук": "achichuk", "Чобан-салат": "choban-salat", "Чирокчи": "chirokchi", "Овощной салат с ореховым соусом": "ovoschnoy-salat-s-orehovym-sousom", "Крылышки с соусом BBQ": "krylyshki-s-sousom-bbq", "Крылышки в соусе Том-ям": "krylyshki-v-souse-tom-yam", "Креветки темпура": "krevetki-tempura", "Долма": "dolma", "Самса с говядиной": "samsa-s-govyadinoy", "Самса с бараниной": "samsa-s-baraninoy", "Креветки в соусе биск": "krevetki-v-souse-bisk", "Костный мозг с соусом чимичурри": "kostnyy-mozg-s-sousom-chimichurri", "Бараньи семечки": "barani-semechki", "Колбаски бараньи": "kolbaski-barani", "Колбаски пикантные": "kolbaski-pikantnye", "Колбаски с сыром": "kolbaski-s-syrom", "Ассорти колбасок": "assorti-kolbasok", "Брокколи, запечённая с соусом гамадари и кунжутным маслом": "brokkoli-zapechennaya-s-sousom-gamadari-", "Чечевичный суп с тыквенными семенами": "chechevichnyy-sup-s-tykvennymi-semenami", "Сливочный суп с лососем и креветками": "slivochnyy-sup-s-lososem-i-krevetkami", "Крем-суп из брокколи": "krem-sup-iz-brokkoli", "Крем-суп из шампиньонов": "krem-sup-iz-shampinonov", "Мастава ташкентская": "mastava-tashkentskaya", "Нухат-шурак": "nuhat-shurak", "Наваристая шурпа из баранины": "navaristaya-shurpa-iz-baraniny", "Куриный суп с домашней лапшой": "kurinyy-sup-s-domashney-lapshoy", "Рибай с картофелем бэби и соусом ромеско": "ribay-s-kartofelem-bebi-i-sousom-romesko", "Стейк «Классик» с брокколи и соусом пеппер-верде": "steyk-klassik-s-brokkoli-i-sousom-pepper", "Ассорти микс-стейков": "assorti-miks-steykov", "Медальоны с мацони и соусом аррабьята": "medalony-s-maconi-i-sousom-arrabyata", "Каре ягнёнка с сезонными овощами": "kare-yagnenka-s-sezonnymi-ovoschami", "Филе-миньон с картофельным пюре и соусом демиглас": "file-minon-s-kartofelnym-pyure-i-sousom-", "Бон-филе с картофелем по-домашнему": "bon-file-s-kartofelem-po-domashnemu", "Мясо по-кутаисски": "myaso-po-kutaisski", "Думгаза (бычий хвост с картофелем)": "dumgaza-bychiy-hvost-s-kartofelem", "Казан-кебаб из говядины": "kazan-kebab-iz-govyadiny", "Казан-кебаб из баранины": "kazan-kebab-iz-baraniny", "Ассорти-гриль по-восточному": "assorti-gril-po-vostochnomu", "Жиз из бон-филе": "zhiz-iz-bon-file", "Жиз из корейки ягнёнка": "zhiz-iz-koreyki-yagnenka", "Корейка ягнёнка": "koreyka-yagnenka", "Куриные крылышки": "kurinye-krylyshki", "Курдюк": "kurdyuk", "Молотый шашлык": "molotyy-shashlyk", "Бедро куриное": "bedro-kurinoe", "Бон-филе": "bon-file", "Овощной шашлык": "ovoschnoy-shashlyk", "Шашлык из сёмги": "shashlyk-iz-semgi", "Микс-шашлык": "miks-shashlyk", "Филе лосося с икорным соусом и спаржей": "file-lososya-s-ikornym-sousom-i-sparzhey", "Филе дорадо со шпинатом и черри": "file-dorado-so-shpinatom-i-cherri", "Лосось, запечённый с овощами": "losos-zapechennyy-s-ovoschami", "Спагетти болоньезе": "spagetti-boloneze", "Вок с овощами в соусе терияки": "vok-s-ovoschami-v-souse-teriyaki", "Паста качо-э-пепе": "pasta-kacho-e-pepe", "Пенне аррабьята": "penne-arrabyata", "Паста орзо с куриным филе и грибами": "pasta-orzo-s-kurinym-file-i-gribami", "Ризотто с тигровыми креветками": "rizotto-s-tigrovymi-krevetkami", "Рис на пару": "ris-na-paru", "Картофельное пюре": "kartofelnoe-pyure", "Овощное соте": "ovoschnoe-sote", "Картофель бэби с пармезаном": "kartofel-bebi-s-parmezanom", "Сезонные овощи на гриле": "sezonnye-ovoschi-na-grile", "Хлебная корзина": "hlebnaya-korzina", "Сан-Себастьян": "san-sebastyan", "Ягодный мильфей": "yagodnyy-milfey", "Шоколадное суфле": "shokoladnoe-sufle", "Фруктовая нарезка": "fruktovaya-narezka", "Тропическое ассорти": "tropicheskoe-assorti"};
 
     // ЧЕРНОВИК описаний — составлены по названиям и фото, требуют вычитки шефом
@@ -1088,79 +1073,99 @@
 
     // ===== 1. Динамическое оборачивание элементов блюд =====
     // Преобразует разметку, оборачивая тексты блюда в i-txt и добавляя интерактивную кнопку +
-    document.querySelectorAll('.item').forEach(function(itemEl) {
+    document.querySelectorAll('.item').forEach(function (itemEl) {
       var nameEl = itemEl.querySelector('.i-name');
       var leadEl = itemEl.querySelector('.i-lead');
       var priceEl = itemEl.querySelector('.i-price');
-      
-      if (nameEl && priceEl) {
-        itemEl.innerHTML = '';
-        
-        var txtWrap = document.createElement('div');
-        txtWrap.className = 'i-txt';
-        txtWrap.appendChild(nameEl);
-        if (leadEl) txtWrap.appendChild(leadEl);
-        txtWrap.appendChild(priceEl);
+      if (!nameEl || !priceEl) return;
 
-        // короткое описание состава под названием
-        var dsc = DISH_DESC[nameEl.getAttribute('data-origin') || nameEl.textContent.trim()];
-        if (dsc) {
-          var dEl = document.createElement('span');
-          dEl.className = 'i-desc';
-          dEl.textContent = dsc;
-          txtWrap.appendChild(dEl);
-        }
-        
-        var btn = document.createElement('div');
-        btn.className = 'i-btn';
-        btn.textContent = '+';
-        
-        // фото блюда (если есть) — открывается по тапу
-        var slug = DISH_PHOTOS[nameEl.getAttribute('data-origin') || nameEl.textContent.trim()];
-        if (slug) {
-          var thumb = document.createElement('img');
-          thumb.className = 'i-thumb';
-          thumb.src = '../assets/dish/' + slug + '.webp';
-          thumb.alt = nameEl.textContent.trim();
-          thumb.loading = 'lazy';
-          thumb.width = 64; thumb.height = 64;
-          // скелетон гаснет, как только фото отрисовалось
-          if (thumb.complete && thumb.naturalWidth) thumb.classList.add('is-loaded');
-          else thumb.addEventListener('load', function () { thumb.classList.add('is-loaded'); }, { once: true });
-          thumb.addEventListener('error', function () { thumb.classList.add('is-loaded'); }, { once: true });
-          thumb.addEventListener('click', function (e) {
-            e.stopPropagation();               // не добавлять в заказ
-            var lb = document.getElementById('lightbox');
-            var li = document.getElementById('lightbox-img');
-            if (lb && li) { li.src = thumb.src; lb.classList.add('active'); }
-          });
-          itemEl.appendChild(thumb);
-          itemEl.classList.add('has-photo');
-        }
+      var origin = (nameEl.getAttribute('data-origin') || nameEl.textContent).trim();
+      var priceVal = parseInt(priceEl.textContent.replace(/\s+/g, ''), 10) || 0;
+      itemEl.innerHTML = '';
 
-        // «Поделиться блюдом» — гость может скинуть другу
-        if (navigator.share) {
-          var sh = document.createElement('button');
-          sh.className = 'i-share';
-          sh.type = 'button';
-          sh.setAttribute('aria-label', 'Поделиться: ' + nameEl.textContent.trim());
-          sh.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>';
-          sh.addEventListener('click', function (e) {
-            e.stopPropagation();                       // не добавлять в заказ
-            var dish = nameEl.textContent.trim();
-            var price = (priceEl.textContent || '').trim();
-            navigator.share({
-              title: dish + ' — Safo Restaurant',
-              text: dish + (price ? ' — ' + price + ' сум' : '') + ' · меню Safo Restaurant',
-              url: location.origin + location.pathname + '#' + (slug || '')
-            }).catch(function () { /* гость передумал */ });
-          });
-          itemEl.appendChild(sh);
-        }
-
-        itemEl.appendChild(txtWrap);
-        itemEl.appendChild(btn);
+      // фото — открывается по тапу
+      var slug = DISH_PHOTOS[origin];
+      if (slug) {
+        var thumb = document.createElement('img');
+        thumb.className = 'i-thumb';
+        thumb.src = '../assets/dish/' + slug + '.webp';
+        thumb.alt = origin;
+        thumb.loading = 'lazy';
+        thumb.width = 88; thumb.height = 88;
+        if (thumb.complete && thumb.naturalWidth) thumb.classList.add('is-loaded');
+        else thumb.addEventListener('load', function () { thumb.classList.add('is-loaded'); }, { once: true });
+        thumb.addEventListener('error', function () { thumb.classList.add('is-loaded'); }, { once: true });
+        thumb.addEventListener('click', function () {
+          var lb = document.getElementById('lightbox'), li = document.getElementById('lightbox-img');
+          if (lb && li) { li.src = thumb.src; lb.classList.add('active'); }
+        });
+        itemEl.appendChild(thumb);
       }
+
+      // текст: название → описание → цена
+      var txt = document.createElement('div');
+      txt.className = 'i-txt';
+      txt.appendChild(nameEl);
+      if (leadEl) txt.appendChild(leadEl);
+      var dsc = DISH_DESC[origin];
+      if (dsc) {
+        var d = document.createElement('span');
+        d.className = 'i-desc'; d.textContent = dsc;
+        txt.appendChild(d);
+      }
+      var foot = document.createElement('div');
+      foot.className = 'i-foot';
+      foot.appendChild(priceEl);
+      var qty = document.createElement('div');
+      qty.className = 'i-qty';
+      foot.appendChild(qty);
+      txt.appendChild(foot);
+      itemEl.appendChild(txt);
+
+      function render() {
+        var n = (selectedItems[origin] && selectedItems[origin].qty) || 0;
+        qty.innerHTML = '';
+        if (n === 0) {
+          var add = document.createElement('div');
+          add.className = 'i-btn';
+          add.textContent = '+';
+          add.setAttribute('role', 'button');
+          add.setAttribute('aria-label', 'Добавить: ' + origin);
+          add.addEventListener('click', function () { change(1); });
+          qty.appendChild(add);
+          itemEl.classList.remove('selected');
+        } else {
+          var box = document.createElement('div');
+          box.className = 'i-stepper';
+          var minus = document.createElement('button');
+          minus.type = 'button'; minus.textContent = '−';
+          minus.setAttribute('aria-label', 'Убрать одну порцию: ' + origin);
+          minus.addEventListener('click', function () { change(-1); });
+          var cnt = document.createElement('span');
+          cnt.className = 'i-count'; cnt.textContent = n;
+          var plus = document.createElement('button');
+          plus.type = 'button'; plus.textContent = '+';
+          plus.setAttribute('aria-label', 'Добавить порцию: ' + origin);
+          plus.addEventListener('click', function () { change(1); });
+          box.appendChild(minus); box.appendChild(cnt); box.appendChild(plus);
+          qty.appendChild(box);
+          itemEl.classList.add('selected');
+        }
+      }
+
+      function change(delta) {
+        var cur = (selectedItems[origin] && selectedItems[origin].qty) || 0;
+        var next = Math.max(0, Math.min(99, cur + delta));
+        if (next === 0) delete selectedItems[origin];
+        else selectedItems[origin] = { price: priceVal, qty: next };
+        if (navigator.vibrate) navigator.vibrate(12);
+        track(delta > 0 ? 'dish_add' : 'dish_remove', origin);
+        render();
+        updateCart();
+      }
+
+      itemEl._renderQty = render;
+      render();
     });
 
     // ===== 2. Система мультиязычности (RU / UZ / EN) =====
@@ -1391,39 +1396,15 @@
     })();
 
     // ===== 5. Интерактивная корзина (Конструктор заказа) =====
-    var selectedItems = {}; // { 'Russian Name': priceValue }
 
-    document.querySelectorAll('.item').forEach(function(itemEl) {
-      itemEl.addEventListener('click', function() {
-        var nameEl = itemEl.querySelector('.i-name');
-        var priceEl = itemEl.querySelector('.i-price');
-        if (!nameEl || !priceEl) return;
-        
-        var originName = nameEl.getAttribute('data-origin') || nameEl.textContent.trim();
-        var priceVal = parseInt(priceEl.textContent.replace(/\s+/g, ''), 10);
-        
-        // короткий тактильный отклик — ощущается дороже (в iOS Safari не поддерживается)
-        if (navigator.vibrate) navigator.vibrate(12);
-        track(itemEl.classList.contains('selected') ? 'dish_remove' : 'dish_add', originName);
-
-        if (itemEl.classList.contains('selected')) {
-          itemEl.classList.remove('selected');
-          delete selectedItems[originName];
-        } else {
-          itemEl.classList.add('selected');
-          selectedItems[originName] = priceVal;
-        }
-        
-        updateCart();
-      });
-    });
 
     function updateCart() {
       if (!selectedItems) selectedItems = {}; // защита: setLang() может вызвать updateCart до инициализации
-      var count = Object.keys(selectedItems).length;
+      var count = 0;
+      for (var q in selectedItems) count += selectedItems[q].qty;
       var total = 0;
       for (var name in selectedItems) {
-        total += selectedItems[name];
+        total += selectedItems[name].price * selectedItems[name].qty;
       }
       
       var cartBar = document.getElementById('cart-bar');
@@ -1458,7 +1439,7 @@
         var div = document.createElement('div');
         div.className = 'cart-modal-item';
         div.innerHTML = '<span class="c-name">' + localizedName + '</span>' +
-                        '<span class="c-price">' + formatPrice(selectedItems[name]) + currencyLbl + '</span>';
+                        '<span class="c-price">' + (selectedItems[name].qty > 1 ? selectedItems[name].qty + ' × ' : '') + formatPrice(selectedItems[name].price) + currencyLbl + '</span>';
         listEl.appendChild(div);
       }
     }
@@ -1488,8 +1469,8 @@
 
     cartClearBtn.addEventListener('click', function() {
       selectedItems = {};
-      document.querySelectorAll('.item.selected').forEach(function(el) {
-        el.classList.remove('selected');
+      document.querySelectorAll('.item').forEach(function (el) {
+        if (el._renderQty) el._renderQty();
       });
       updateCart();
       closeCartModal();
@@ -1577,6 +1558,37 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
       update();
+    })();
+
+
+    // ===== Поделиться выбранными блюдами =====
+    (function () {
+      var btn = document.getElementById('cart-modal-share');
+      if (!btn) return;
+      if (!navigator.share && !navigator.clipboard) { btn.style.display = 'none'; return; }
+      btn.addEventListener('click', function () {
+        var lines = [], total = 0;
+        for (var n in selectedItems) {
+          var it = selectedItems[n];
+          total += it.price * it.qty;
+          lines.push('• ' + n + (it.qty > 1 ? ' × ' + it.qty : '') + ' — ' + formatPrice(it.price * it.qty) + ' сум');
+        }
+        if (!lines.length) return;
+        var text = 'Мой заказ в Safo Restaurant:\n' + lines.join('\n') +
+                   '\n\nИтого: ' + formatPrice(total) + ' сум';
+        var url = location.origin + location.pathname;
+        track('order_share', String(lines.length));
+        if (navigator.share) {
+          navigator.share({ title: 'Заказ · Safo Restaurant', text: text, url: url })
+            .catch(function () {});
+        } else {
+          navigator.clipboard.writeText(text + '\n' + url).then(function () {
+            var old = btn.innerHTML;
+            btn.textContent = 'Скопировано ✓';
+            setTimeout(function () { btn.innerHTML = old; }, 1600);
+          });
+        }
+      });
     })();
 
     // ===== 6. Галерея-Lightbox для картинок категорий =====
