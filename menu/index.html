@@ -97,6 +97,23 @@
        название + неразрывная цена + кнопка), поэтому на узком экране две
        колонки распирали страницу и уводили её вбок. */
 
+
+    /* скелетон: мерцание в рамке, пока фото не загрузилось */
+    @keyframes shimmer{ from{background-position:200% 0;} to{background-position:-200% 0;} }
+    .i-thumb, .cat-hero img{
+      background-image:linear-gradient(100deg,
+        var(--bg-soft) 28%, rgba(255,255,255,.9) 48%, var(--bg-soft) 68%);
+      background-size:200% 100%;
+      background-color:var(--bg-soft);
+      animation:shimmer 1.3s linear infinite;
+    }
+    .i-thumb.is-loaded, .cat-hero img.is-loaded{
+      animation:none; background-image:none;
+    }
+    @media (prefers-reduced-motion:reduce){
+      .i-thumb, .cat-hero img{animation:none;}
+    }
+
     /* фото блюда в строке меню */
     .i-thumb{
       flex:0 0 auto; width:64px; height:64px; border-radius:14px;
@@ -1006,6 +1023,10 @@
           thumb.alt = nameEl.textContent.trim();
           thumb.loading = 'lazy';
           thumb.width = 64; thumb.height = 64;
+          // скелетон гаснет, как только фото отрисовалось
+          if (thumb.complete && thumb.naturalWidth) thumb.classList.add('is-loaded');
+          else thumb.addEventListener('load', function () { thumb.classList.add('is-loaded'); }, { once: true });
+          thumb.addEventListener('error', function () { thumb.classList.add('is-loaded'); }, { once: true });
           thumb.addEventListener('click', function (e) {
             e.stopPropagation();               // не добавлять в заказ
             var lb = document.getElementById('lightbox');
@@ -1347,6 +1368,16 @@
       closeCartModal();
     });
 
+
+
+    // ===== Скелетоны для фото категорий =====
+    (function () {
+      document.querySelectorAll('.cat-hero img, .menu-hero img').forEach(function (img) {
+        if (img.complete && img.naturalWidth) { img.classList.add('is-loaded'); return; }
+        img.addEventListener('load', function () { img.classList.add('is-loaded'); }, { once: true });
+        img.addEventListener('error', function () { img.classList.add('is-loaded'); }, { once: true });
+      });
+    })();
 
     // ===== Кнопка «наверх» =====
     (function () {
