@@ -119,6 +119,17 @@
     .i-lead{flex:1 1 auto;border-bottom:1px dotted rgba(43,33,24,.26);transform:translateY(-3px);min-width:14px;}
     .i-price{flex:0 0 auto;font-size:14px;font-weight:700;color:var(--gold-deep);white-space:nowrap;}
     
+
+    .i-share{
+      flex:0 0 auto; width:30px; height:30px; border-radius:8px;
+      display:flex; align-items:center; justify-content:center;
+      border:1px solid var(--gold-line); background:transparent;
+      color:var(--gold-deep); cursor:pointer; -webkit-tap-highlight-color:transparent;
+      transition:background .16s ease, transform .1s ease;
+    }
+    .i-share:active{transform:scale(.9); background:var(--card-press);}
+    .i-share svg{width:15px;height:15px;}
+
     .i-btn{flex:0 0 auto;width:24px;height:24px;border-radius:6px;border:1px solid rgba(201,169,97,.26);
       background:rgba(201,169,97,.08);color:var(--gold);display:flex;align-items:center;justify-content:center;
       transition:all .18s ease;font-weight:700;font-size:14px;user-select:none;}
@@ -213,6 +224,21 @@
         background-image:linear-gradient(100deg, #221C17 28%, rgba(255,255,255,.10) 48%, #221C17 68%);
         background-color:#221C17;
       }
+    }
+
+
+    /* Планшет: колонка шире, блюда в две колонки — на iPad не пусто */
+    @media (min-width:700px){
+      .page{max-width:860px;}
+      .cat .items{display:grid;grid-template-columns:1fr 1fr;column-gap:26px;}
+      .cat--compact .items{grid-template-columns:1fr 1fr 1fr;}
+      .menu-hero{height:300px;}
+      .cat-hero{height:190px;}
+      .i-thumb{width:72px;height:72px;}
+    }
+    @media (min-width:1000px){
+      .page{max-width:980px;}
+      .cat--compact .items{grid-template-columns:repeat(3,1fr);}
     }
 
     .cta-wrap{padding:28px 22px 4px;}
@@ -1093,6 +1119,26 @@
           itemEl.classList.add('has-photo');
         }
 
+        // «Поделиться блюдом» — гость может скинуть другу
+        if (navigator.share) {
+          var sh = document.createElement('button');
+          sh.className = 'i-share';
+          sh.type = 'button';
+          sh.setAttribute('aria-label', 'Поделиться: ' + nameEl.textContent.trim());
+          sh.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>';
+          sh.addEventListener('click', function (e) {
+            e.stopPropagation();                       // не добавлять в заказ
+            var dish = nameEl.textContent.trim();
+            var price = (priceEl.textContent || '').trim();
+            navigator.share({
+              title: dish + ' — Safo Restaurant',
+              text: dish + (price ? ' — ' + price + ' сум' : '') + ' · меню Safo Restaurant',
+              url: location.origin + location.pathname + '#' + (slug || '')
+            }).catch(function () { /* гость передумал */ });
+          });
+          itemEl.appendChild(sh);
+        }
+
         itemEl.appendChild(txtWrap);
         itemEl.appendChild(btn);
       }
@@ -1336,6 +1382,9 @@
         var originName = nameEl.getAttribute('data-origin') || nameEl.textContent.trim();
         var priceVal = parseInt(priceEl.textContent.replace(/\s+/g, ''), 10);
         
+        // короткий тактильный отклик — ощущается дороже (в iOS Safari не поддерживается)
+        if (navigator.vibrate) navigator.vibrate(12);
+
         if (itemEl.classList.contains('selected')) {
           itemEl.classList.remove('selected');
           delete selectedItems[originName];
