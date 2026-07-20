@@ -45,6 +45,49 @@
   <!-- Веб-шрифты: Manrope + Playfair Display, вшиты локально (работают офлайн, без внешних запросов) -->
   <link rel="stylesheet" href="assets/fonts/fonts.css" />
 
+
+  <!-- Структурированные данные: Google показывает карточку с часами, адресом и меню -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Restaurant",
+    "@id": "https://safo-bio.netlify.app/#restaurant",
+    "name": "Safo Restaurant",
+    "description": "Ресторан Safo на территории горного резорта Zarra Resort в Самарканде. Европейская и узбекская кухня, мангал, стейки.",
+    "url": "https://safo-bio.netlify.app/",
+    "image": "https://safo-bio.netlify.app/assets/og-safo.jpg",
+    "logo": "https://safo-bio.netlify.app/assets/pwa-512.png",
+    "telephone": "+998875943330",
+    "servesCuisine": ["Европейская", "Узбекская", "Стейки", "Мангал"],
+    "priceRange": "$$",
+    "currenciesAccepted": "UZS",
+    "hasMenu": "https://safo-bio.netlify.app/menu/",
+    "acceptsReservations": "True",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "UZ",
+      "addressRegion": "Самаркандская область",
+      "addressLocality": "пос. Акбуйра",
+      "streetAddress": "Территория Zarra Resort"
+    },
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "11:00",
+      "closes": "23:00"
+    }],
+    "sameAs": [
+      "https://instagram.com/safo.restaurant_",
+      "https://t.me/safo_restaurant"
+    ],
+    "containedInPlace": {
+      "@type": "Resort",
+      "name": "Zarra Resort",
+      "url": "https://zarra-resort.netlify.app"
+    }
+  }
+  </script>
+
   <style>
     :root{
       /* ===== Кремовая тема (по референсу Дианы) ===== */
@@ -505,7 +548,7 @@
 
     <!-- ======= ШАПКА: фото резорта ======= -->
     <header class="hero">
-      <img class="hero-photo" src="assets/hero-restaurant.jpg"
+      <img class="hero-photo" src="assets/hero-restaurant.webp"
            alt="Safo Restaurant — стейк от шефа"
            width="1200" height="745" />
       <div class="hero-fade"></div>
