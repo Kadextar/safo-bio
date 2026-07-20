@@ -26,6 +26,28 @@
       --display:"Playfair Display", Georgia, serif;
       --sans:"Manrope", -apple-system, "Helvetica Neue", Arial, system-ui, sans-serif;
     }
+
+    /* ===== Тёмная тема: ресторан работает до 23:00, вечером кремовый экран слепит.
+       Ключевое: --gold-deep на светлом был ТЁМНЫМ золотом для контраста,
+       на тёмном он обязан стать СВЕТЛЫМ, иначе текст и цены пропадут. ===== */
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#171310;
+        --bg-soft:#221C17;
+        --white:#221C17;
+        --gold:#C9A961;
+        --gold-bright:#DDBE7A;
+        --gold-deep:#E3C689;
+        --gold-soft:rgba(201,169,97,.34);
+        --gold-line:rgba(201,169,97,.34);
+        --ink:#F2EADC;
+        --ink-dim:rgba(242,234,220,.60);
+        --card:rgba(255,255,255,.05);
+        --card-press:rgba(201,169,97,.16);
+        --line:rgba(201,169,97,.26);
+      }
+    }
+
     *{box-sizing:border-box;} html,body{margin:0;padding:0;}
     html{scroll-behavior:smooth;}
     body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;}
@@ -57,6 +79,16 @@
     .menu-hero .mh-ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
       padding-bottom:20px;text-align:center;
       background:linear-gradient(180deg,rgba(238,229,212,.50),rgba(238,229,212,.68) 42%,rgba(238,229,212,.90) 78%,var(--bg));}
+
+    /* Логотип под тему: два <img>, переключение через display —
+       в отличие от <picture>, CSS пересчитывается при смене темы на лету. */
+    /* img.* — специфичность выше, чем у .menu-hero img{display:block} */
+    img.logo--dark{display:none;}
+    @media (prefers-color-scheme: dark){
+      img.logo--light{display:none;}
+      img.logo--dark{display:block;}
+    }
+
     .menu-hero .mh-logo{width:154px;height:auto;filter:drop-shadow(0 8px 20px rgba(43,33,24,.18));}
     .menu-hero .mh-cap{margin-top:9px;font-size:10.5px;letter-spacing:3.5px;text-transform:uppercase;color:var(--ink);opacity:.9;}
 
@@ -159,6 +191,29 @@
     .to-top svg{width:22px;height:22px;}
     /* поднимаем над плашкой заказа, когда она активна */
     .cart-bar.active ~ .to-top{bottom:calc(84px + env(safe-area-inset-bottom));}
+
+
+    @media (prefers-color-scheme: dark){
+      .topbar{background:rgba(23,19,16,.92);}
+      .catnav{background:rgba(23,19,16,.94);}
+      .chip{background:#221C17;}
+      .back{background:rgba(201,169,97,.12);}
+      .search-overlay{background:var(--bg);}
+      .search-overlay input{background:rgba(255,255,255,.06);border-color:var(--gold-line);color:var(--ink);}
+      .langbar{background:rgba(34,28,23,.85);}
+      /* вуаль над фото-шапкой — тёмная, иначе логотип не читается */
+      .menu-hero .mh-ov{background:linear-gradient(180deg,rgba(23,19,16,.45),rgba(23,19,16,.60) 42%,rgba(23,19,16,.86) 78%,var(--bg));}
+      .item.selected{background:rgba(201,169,97,.12);}
+      .i-btn{background:rgba(201,169,97,.12);}
+      .to-top{background:rgba(34,28,23,.92);box-shadow:0 6px 18px rgba(0,0,0,.5);}
+      .cart-modal-content{background:#1E1813;}
+      .cart-view-btn{background:#171310 !important;color:var(--gold-deep) !important;}
+      /* скелетон на тёмном */
+      .i-thumb, .cat-hero img{
+        background-image:linear-gradient(100deg, #221C17 28%, rgba(255,255,255,.10) 48%, #221C17 68%);
+        background-color:#221C17;
+      }
+    }
 
     .cta-wrap{padding:28px 22px 4px;}
     .cta{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;border-radius:16px;
@@ -502,7 +557,8 @@
     <header class="menu-hero">
       <img src="../assets/menu/hero.webp" alt="Блюда ресторана Safo" />
       <div class="mh-ov">
-        <img class="mh-logo" src="../assets/logo-safo-black.png" alt="Safo — by Zarra Resort" />
+        <img class="mh-logo logo--light" src="../assets/logo-safo-black.png" alt="Safo — by Zarra Resort" />
+        <img class="mh-logo logo--dark" src="../assets/logo-safo-white.png" alt="" aria-hidden="true" />
         <div class="mh-cap">Ресторанное меню · 2026</div>
       </div>
     </header>
@@ -1367,6 +1423,8 @@
       updateCart();
       closeCartModal();
     });
+
+
 
 
 

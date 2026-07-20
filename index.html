@@ -108,6 +108,28 @@
       --sans:"Manrope", -apple-system, "Helvetica Neue", Arial, system-ui, sans-serif;
     }
 
+    /* ===== Тёмная тема: ресторан работает до 23:00, вечером кремовый экран слепит.
+       Ключевое: --gold-deep на светлом был ТЁМНЫМ золотом для контраста,
+       на тёмном он обязан стать СВЕТЛЫМ, иначе текст и цены пропадут. ===== */
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#171310;
+        --bg-soft:#221C17;
+        --white:#221C17;
+        --gold:#C9A961;
+        --gold-bright:#DDBE7A;
+        --gold-deep:#E3C689;
+        --gold-soft:rgba(201,169,97,.34);
+        --gold-line:rgba(201,169,97,.34);
+        --ink:#F2EADC;
+        --ink-dim:rgba(242,234,220,.60);
+        --card:rgba(255,255,255,.05);
+        --card-press:rgba(201,169,97,.16);
+        --line:rgba(201,169,97,.26);
+      }
+    }
+
+
     *{box-sizing:border-box;}
     html,body{margin:0;padding:0;}
 
@@ -200,6 +222,29 @@
     }
     .lang-btn.active{background:var(--gold-deep);color:#fff;}
 
+
+    @media (prefers-color-scheme: dark){
+      /* карточки кнопок и панелей — тёплый тёмный, а не белый */
+      .btn{background:#221C17;box-shadow:0 4px 14px rgba(0,0,0,.45);}
+      .langbar{background:rgba(34,28,23,.85);box-shadow:0 4px 14px rgba(0,0,0,.5);}
+      .status{background:rgba(201,169,97,.10);}
+      .promo{background:linear-gradient(160deg, rgba(201,169,97,.10), rgba(255,255,255,.03));
+             box-shadow:0 4px 14px rgba(0,0,0,.35);}
+      .promo .p-btn{background:#221C17;}
+      /* фото шапки: затемняем и уводим в тёмный фон */
+      .hero::before{background:linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.10) 45%);}
+      .hero-fade{background:linear-gradient(to bottom, rgba(23,19,16,0) 0%, rgba(23,19,16,.70) 45%, var(--bg) 100%);}
+      .page{box-shadow:0 0 0 1px rgba(201,169,97,.14);}
+      /* линии фона мягче, чтобы не рябило */
+      .ln--a{opacity:.30;} .ln--b{opacity:.20;}
+      /* тёплый градиент фона был захардкожен — в тёмной теме перекрываем */
+      body{background-image:linear-gradient(165deg, #1C1713 0%, #171310 45%, #120E0C 100%);}
+      /* статус «открыто» — на тёмном нужен светлый зелёный */
+      .status.is-open{border-color:rgba(94,200,140,.42);background:rgba(94,200,140,.12);}
+      .status.is-open .dot, .status.is-open .dot::after{background:#5EC88C;}
+      .status.is-closed{border-color:rgba(255,255,255,.16);background:rgba(255,255,255,.05);}
+    }
+
     /* ---------- Шапка с фото ---------- */
     .hero{
       position:relative;
@@ -232,6 +277,16 @@
     }
 
     /* ---------- Логотип ---------- */
+
+    /* Логотип под тему: два <img>, переключение через display —
+       в отличие от <picture>, CSS пересчитывается при смене темы на лету. */
+    /* img.* — специфичность выше, чем у .menu-hero img{display:block} */
+    img.logo--dark{display:none;}
+    @media (prefers-color-scheme: dark){
+      img.logo--light{display:none;}
+      img.logo--dark{display:block;}
+    }
+
     .logo-wrap{
       display:flex;
       justify-content:center;
@@ -556,9 +611,10 @@
 
     <!-- ======= ЛОГОТИП ======= -->
     <div class="logo-wrap">
-      <img class="logo anim" style="animation-delay:.05s"
-           src="assets/logo-safo-black.png" alt="Safo — by Zarra Resort"
-           width="250" height="163" />
+      <img class="logo logo--light anim" style="animation-delay:.05s" src="assets/logo-safo-black.png"
+           alt="Safo — by Zarra Resort" width="250" height="163" />
+      <img class="logo logo--dark anim" style="animation-delay:.05s" src="assets/logo-safo-white.png"
+           alt="" aria-hidden="true" width="250" height="163" />
     </div>
 
     <!-- ======= СТАТУС ======= -->
@@ -744,6 +800,8 @@
         el.style.opacity = '1';
       });
     }, 2000);
+
+
 
     // ===== Мультиязычность RU / UZ / EN + умный статус часов (11:00–23:00) =====
     var I18N = {

@@ -2,7 +2,7 @@
    Меню должно открываться у гостя даже при слабом Wi-Fi в горах,
    поэтому оболочку и картинки держим в кэше. */
 
-const VERSION = 'safo-v3';
+const VERSION = 'safo-v4';
 const CORE = `${VERSION}-core`;
 const RUNTIME = `${VERSION}-runtime`;
 
@@ -30,6 +30,7 @@ const CORE_ASSETS = [
   './assets/fonts/PlayfairDisplay-600-latin-ext.woff2',
   './assets/fonts/PlayfairDisplay-600-latin.woff2',
   './assets/logo-safo-black.png',
+  './assets/logo-safo-white.png',
   './assets/hero-restaurant.webp',
   './assets/og-safo.jpg',
   './assets/safo.vcf',
