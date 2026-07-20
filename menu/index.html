@@ -78,12 +78,12 @@
     .cat-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent);opacity:.6;}
     .cat-em{font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin:0 0 14px;font-weight:600;}
 
-    .item{display:flex;align-items:center;gap:12px;padding:10px 8px;border-bottom:1px solid rgba(201,169,97,.25);
+    .item{display:flex;align-items:center;gap:12px;padding:9px 8px;border-bottom:1px solid rgba(201,169,97,.25);
       cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .16s ease, padding .16s ease;border-radius:8px;}
     .item:last-child{border-bottom:0;}
     .item.selected{background:rgba(201,169,97,.08);padding-left:12px;padding-right:12px;}
     .i-txt{flex:1 1 auto;display:flex;align-items:baseline;gap:8px;min-width:0;}
-    .i-name{font-size:14.5px;font-weight:600;letter-spacing:.1px;line-height:1.3;}
+    .i-name{font-size:14.5px;font-weight:600;letter-spacing:.1px;line-height:1.28;}
     .i-lead{flex:1 1 auto;border-bottom:1px dotted rgba(43,33,24,.26);transform:translateY(-3px);min-width:14px;}
     .i-price{flex:0 0 auto;font-size:14px;font-weight:700;color:var(--gold-deep);white-space:nowrap;}
     
@@ -96,6 +96,27 @@
        места: 1fr не сжимается уже своего содержимого (~190px на строку:
        название + неразрывная цена + кнопка), поэтому на узком экране две
        колонки распирали страницу и уводили её вбок. */
+
+    /* фото блюда в строке меню */
+    .i-thumb{
+      flex:0 0 auto; width:64px; height:64px; border-radius:14px;
+      object-fit:cover; display:block; cursor:zoom-in;
+      border:1px solid var(--gold-line);
+      background:var(--bg-soft);
+      box-shadow:0 2px 8px rgba(43,33,24,.10);
+      transition:transform .18s cubic-bezier(.22,.61,.36,1), box-shadow .18s ease;
+    }
+    .i-thumb:active{transform:scale(.94);}
+    @media (hover:hover){ .i-thumb:hover{transform:scale(1.06);box-shadow:0 6px 16px rgba(43,33,24,.20);} }
+    .item.has-photo{padding-top:8px;padding-bottom:8px;}
+    @media (max-width:400px){
+      .item.has-photo .i-txt{flex-wrap:wrap;}
+      .item.has-photo .i-lead{display:none;}
+      .item.has-photo .i-price{width:100%;margin-top:2px;}
+    }
+    /* строки без фото выравниваем под те, что с фото */
+    .cat--compact .i-thumb{display:none;}
+
     .cat--compact .items{display:grid;grid-template-columns:minmax(0,1fr);column-gap:16px;}
     @media (min-width:450px){
       .cat--compact .items{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
@@ -927,6 +948,8 @@
       " сум": { uz: " so'm", en: " UZS" }
     };
 
+    var DISH_PHOTOS = {"Омлет с сыром и томатами": "omlet-s-syrom-i-tomatami", "Глазунья из 3-х яиц": "glazunya-iz-3-h-yaic", "Рисовая каша с ягодами": "risovaya-kasha-s-yagodami", "Овсяная каша": "ovsyanaya-kasha", "Английский завтрак": "angliyskiy-zavtrak", "Французский завтрак": "francuzskiy-zavtrak", "Сырники с ягодным соусом": "syrniki-s-yagodnym-sousom", "Шакшука": "shakshuka", "Национальный завтрак-сет": "nacionalnyy-zavtrak-set", "Балтийский сет": "baltiyskiy-set", "Пивная доска": "pivnaya-doska", "Чесночные гренки": "chesnochnye-grenki", "Закуска к пиву": "zakuska-k-pivu", "Ассорти смёрребрёдов": "assorti-smerrebredov", "Свежая нарезка овощей": "svezhaya-narezka-ovoschey", "Домашние маринады": "domashnie-marinady", "Чакка": "chakka", "Язык телячий с соусом ромеско": "yazyk-telyachiy-s-sousom-romesko", "Казы": "kazy", "Сет брускет": "set-brusket", "Буррата с томатами и соусом песто": "burrata-s-tomatami-i-sousom-pesto", "Норвежский лосось с сальсой из манго": "norvezhskiy-losos-s-salsoy-iz-mango", "Вителло Тоннато": "vitello-tonnato", "Ассорти фермерских сыров": "assorti-fermerskih-syrov", "Микс свежих овощей с сыром фета": "miks-svezhih-ovoschey-s-syrom-feta", "Микс-салат с авокадо и тигровыми креветками": "miks-salat-s-avokado-i-tigrovymi-krevetk", "Большой зелёный салат": "bolshoy-zelenyy-salat", "Салатный микс с тунцом": "salatnyy-miks-s-tuncom", "Гриль-салат в печи Josper": "gril-salat-v-pechi-josper", "Цезарь с креветками": "cezar-s-krevetkami", "Цезарь с курицей": "cezar-s-kuricey", "Ачичук": "achichuk", "Чобан-салат": "choban-salat", "Чирокчи": "chirokchi", "Овощной салат с ореховым соусом": "ovoschnoy-salat-s-orehovym-sousom", "Крылышки с соусом BBQ": "krylyshki-s-sousom-bbq", "Крылышки в соусе Том-ям": "krylyshki-v-souse-tom-yam", "Креветки темпура": "krevetki-tempura", "Долма": "dolma", "Самса с говядиной": "samsa-s-govyadinoy", "Самса с бараниной": "samsa-s-baraninoy", "Креветки в соусе биск": "krevetki-v-souse-bisk", "Костный мозг с соусом чимичурри": "kostnyy-mozg-s-sousom-chimichurri", "Бараньи семечки": "barani-semechki", "Колбаски бараньи": "kolbaski-barani", "Колбаски пикантные": "kolbaski-pikantnye", "Колбаски с сыром": "kolbaski-s-syrom", "Ассорти колбасок": "assorti-kolbasok", "Брокколи, запечённая с соусом гамадари и кунжутным маслом": "brokkoli-zapechennaya-s-sousom-gamadari-", "Чечевичный суп с тыквенными семенами": "chechevichnyy-sup-s-tykvennymi-semenami", "Сливочный суп с лососем и креветками": "slivochnyy-sup-s-lososem-i-krevetkami", "Крем-суп из брокколи": "krem-sup-iz-brokkoli", "Крем-суп из шампиньонов": "krem-sup-iz-shampinonov", "Мастава ташкентская": "mastava-tashkentskaya", "Нухат-шурак": "nuhat-shurak", "Наваристая шурпа из баранины": "navaristaya-shurpa-iz-baraniny", "Куриный суп с домашней лапшой": "kurinyy-sup-s-domashney-lapshoy", "Рибай с картофелем бэби и соусом ромеско": "ribay-s-kartofelem-bebi-i-sousom-romesko", "Стейк «Классик» с брокколи и соусом пеппер-верде": "steyk-klassik-s-brokkoli-i-sousom-pepper", "Ассорти микс-стейков": "assorti-miks-steykov", "Медальоны с мацони и соусом аррабьята": "medalony-s-maconi-i-sousom-arrabyata", "Каре ягнёнка с сезонными овощами": "kare-yagnenka-s-sezonnymi-ovoschami", "Филе-миньон с картофельным пюре и соусом демиглас": "file-minon-s-kartofelnym-pyure-i-sousom-", "Бон-филе с картофелем по-домашнему": "bon-file-s-kartofelem-po-domashnemu", "Мясо по-кутаисски": "myaso-po-kutaisski", "Думгаза (бычий хвост с картофелем)": "dumgaza-bychiy-hvost-s-kartofelem", "Казан-кебаб из говядины": "kazan-kebab-iz-govyadiny", "Казан-кебаб из баранины": "kazan-kebab-iz-baraniny", "Ассорти-гриль по-восточному": "assorti-gril-po-vostochnomu", "Жиз из бон-филе": "zhiz-iz-bon-file", "Жиз из корейки ягнёнка": "zhiz-iz-koreyki-yagnenka", "Корейка ягнёнка": "koreyka-yagnenka", "Куриные крылышки": "kurinye-krylyshki", "Курдюк": "kurdyuk", "Молотый шашлык": "molotyy-shashlyk", "Бедро куриное": "bedro-kurinoe", "Бон-филе": "bon-file", "Овощной шашлык": "ovoschnoy-shashlyk", "Шашлык из сёмги": "shashlyk-iz-semgi", "Микс-шашлык": "miks-shashlyk", "Филе лосося с икорным соусом и спаржей": "file-lososya-s-ikornym-sousom-i-sparzhey", "Филе дорадо со шпинатом и черри": "file-dorado-so-shpinatom-i-cherri", "Лосось, запечённый с овощами": "losos-zapechennyy-s-ovoschami", "Спагетти болоньезе": "spagetti-boloneze", "Вок с овощами в соусе терияки": "vok-s-ovoschami-v-souse-teriyaki", "Паста качо-э-пепе": "pasta-kacho-e-pepe", "Пенне аррабьята": "penne-arrabyata", "Паста орзо с куриным филе и грибами": "pasta-orzo-s-kurinym-file-i-gribami", "Ризотто с тигровыми креветками": "rizotto-s-tigrovymi-krevetkami", "Рис на пару": "ris-na-paru", "Картофельное пюре": "kartofelnoe-pyure", "Овощное соте": "ovoschnoe-sote", "Картофель бэби с пармезаном": "kartofel-bebi-s-parmezanom", "Сезонные овощи на гриле": "sezonnye-ovoschi-na-grile", "Хлебная корзина": "hlebnaya-korzina", "Сан-Себастьян": "san-sebastyan", "Ягодный мильфей": "yagodnyy-milfey", "Шоколадное суфле": "shokoladnoe-sufle", "Фруктовая нарезка": "fruktovaya-narezka", "Тропическое ассорти": "tropicheskoe-assorti"};
+
     // ===== 1. Динамическое оборачивание элементов блюд =====
     // Преобразует разметку, оборачивая тексты блюда в i-txt и добавляя интерактивную кнопку +
     document.querySelectorAll('.item').forEach(function(itemEl) {
@@ -947,6 +970,25 @@
         btn.className = 'i-btn';
         btn.textContent = '+';
         
+        // фото блюда (если есть) — открывается по тапу
+        var slug = DISH_PHOTOS[nameEl.getAttribute('data-origin') || nameEl.textContent.trim()];
+        if (slug) {
+          var thumb = document.createElement('img');
+          thumb.className = 'i-thumb';
+          thumb.src = '../assets/dish/' + slug + '.jpg';
+          thumb.alt = nameEl.textContent.trim();
+          thumb.loading = 'lazy';
+          thumb.width = 64; thumb.height = 64;
+          thumb.addEventListener('click', function (e) {
+            e.stopPropagation();               // не добавлять в заказ
+            var lb = document.getElementById('lightbox');
+            var li = document.getElementById('lightbox-img');
+            if (lb && li) { li.src = thumb.src; lb.classList.add('active'); }
+          });
+          itemEl.appendChild(thumb);
+          itemEl.classList.add('has-photo');
+        }
+
         itemEl.appendChild(txtWrap);
         itemEl.appendChild(btn);
       }
