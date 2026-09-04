@@ -183,7 +183,7 @@
     .page{
       position:relative;
       z-index:1;
-      max-width:480px;
+      max-width:var(--col);
       margin:0 auto;
       min-height:100vh;
       overflow:hidden;
@@ -547,6 +547,150 @@
     @media (prefers-reduced-motion:reduce){
       .anim{animation:none;opacity:1;}
     }
+
+/* ═══════════════════════════════════════════════════════════════════
+   SAFO · АДАПТИВ  —  index.html
+   ВСТАВИТЬ В САМЫЙ КОНЕЦ <style>. Обязательно после блока
+   @media(prefers-color-scheme:dark) строк 226–246: там .page{box-shadow}
+   и .hero-fade объявлены без условия по ширине.
+   Разметка не меняется. .links содержит ровно 8 <a class="btn">,
+   первые две — «Забронировать столик» и «Меню».
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root{ --col:480px; }
+@media (min-width:700px) { :root{ --col:660px;  } }
+@media (min-width:900px) { :root{ --col:780px;  } }
+@media (min-width:1000px){ :root{ --col:880px;  } }
+@media (min-width:1180px){ :root{ --col:1240px; } }   /* hero 1200px → 1.03× */
+@media (min-width:1520px){ :root{ --col:1400px; } }   /* hero → 1.17×, под
+                                                         .hero::before незаметно */
+
+/* ---------- 700+: та же одна колонка, но не «растянутый телефон» ---------- */
+@media (min-width:700px){
+  .hero{height:300px;}
+  .hero-fade{height:150px;}
+  .logo-wrap{margin-top:-48px;}
+  .logo{max-width:280px;}
+  .title{font-size:33px;}
+  .head{padding:12px 26px 4px;}
+  .langbar{right:22px;}
+
+  .links{padding:16px 26px 8px; gap:13px;}
+  .btn{padding:15px 17px;}
+  .btn .ic{width:46px; height:46px;}
+  .btn .ic svg{width:24px; height:24px;}
+  .btn .lbl{font-size:15.5px;}
+  .btn .sub{font-size:13px;}
+
+  /* промо перестаёт быть «островком» по центру: заголовок и подпись
+     слева, кнопка справа. Работает на трёх существующих детях. */
+  .promo{
+    margin:24px 26px 4px; padding:22px 24px; text-align:left;
+    display:grid; grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:"t b" "s b";
+    column-gap:24px; align-items:center;
+  }
+  .promo .p-title{grid-area:t; font-size:20px; margin:0 0 5px;}
+  .promo .p-text {grid-area:s; margin:0;}
+  .promo .p-btn  {grid-area:b; align-self:center;}
+}
+
+/* ---------- 900+: ссылки в две колонки ---------- */
+@media (min-width:900px){
+  .links{
+    display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px; padding:18px 28px 8px;
+  }
+  /* nth-child(1)/(2) = «Забронировать столик» и «Меню» — две главные
+     цели страницы, идут во всю ширину. Если ссылки переставят —
+     переставить и это правило. */
+  .links > .btn:nth-child(1),
+  .links > .btn:nth-child(2){grid-column:1 / -1;}
+}
+
+@media (min-width:1000px){ .hero{height:330px;} .logo{max-width:300px;} }
+
+/* ═══════════ 1180+: панель на «столе» + композиция 3+3 / 2+2+2 ═══════════ */
+@media (min-width:1180px){
+  body{background-image:linear-gradient(165deg,#E9DCC4 0%,#E1D1B4 52%,#D7C39E 100%);}
+
+  .page{
+    /* СВОЯ поверхность обязательна: без неё золотое кольцо и тень
+       рисуются вокруг области, тождественной фону, и панель не
+       читается как карточка — она читается как контур в воздухе. */
+    background:var(--bg);
+    min-height:auto;               /* было 100vh — прямой источник пустоты
+                                      под футером на высоком мониторе */
+    margin:44px auto 56px;
+    border-radius:26px;            /* .page уже overflow:hidden → обрежет hero.
+                                      Здесь это безопасно: sticky-элементов нет. */
+    box-shadow:
+      0 0 0 1px rgba(201,169,97,.34),
+      inset 0 1px 0 rgba(255,255,255,.55),
+      0 28px 64px -22px rgba(43,33,24,.30);
+  }
+
+  /* 1240×360 = 3.44:1 при исходнике 1.61:1 → показываем ~46% высоты
+     кадра (на телефоне 34%). Кроп только по вертикали, ширина 1:1. */
+  .hero{height:360px;}
+  .hero-photo{object-position:center 55%;}
+  .hero-fade{height:190px;}
+  .logo-wrap{margin-top:-62px;}
+  .logo{max-width:320px;}
+  .title{font-size:38px;}
+  .head{padding:16px 26px 4px;}
+  .status{font-size:12.5px; padding:10px 20px 10px 16px;}
+  .divider{width:76px; margin:26px auto 8px;}
+  .langbar{top:calc(20px + env(safe-area-inset-top)); right:26px;}
+
+  /* 8 кнопок из шести колонок: 3+3 / 2+2+2 / 2+2+2 = ровно три ряда.
+     Ряд 1 — «Забронировать» и «Меню» по половине (по 570px, а не
+     золотая плита во всю ширину). Ряды 2–3 — шесть ссылок по трети.
+     Иерархия соблюдена, композиция закрыта, разметка не тронута. */
+  .links{
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:16px; padding:26px 40px 10px;
+  }
+  .links > .btn{grid-column:span 2;}
+  .links > .btn:nth-child(1),
+  .links > .btn:nth-child(2){grid-column:span 3;}
+
+  .btn{padding:17px 20px; border-radius:18px; gap:15px;}
+  .btn .ic{width:48px; height:48px; border-radius:14px;}
+  .btn .ic svg{width:25px; height:25px;}
+  .btn .lbl{font-size:16px;}
+  .btn .sub{font-size:13px;}
+
+  .promo{margin:32px 40px 6px; padding:26px 32px;}
+  .promo .p-title{font-size:23px;}
+  .promo .p-btn{padding:13px 24px; font-size:14px;}
+
+  .foot{padding:32px 26px 46px; font-size:12.5px;}
+}
+
+@media (min-width:1520px){
+  .hero{height:420px;}
+  .hero-fade{height:210px;}
+  .logo-wrap{margin-top:-70px;}
+  .logo{max-width:350px;}
+  .links{gap:18px; padding:30px 46px 12px;}
+  .promo{margin:36px 46px 6px;}
+  .foot{padding:36px 26px 52px;}
+}
+
+/* ---------- Тёмная тема ----------
+   .page{box-shadow} в строке 237 объявлен без условия по ширине;
+   наш блок идёт позже и выиграл бы со светлыми значениями. */
+@media (prefers-color-scheme:dark) and (min-width:1180px){
+  body{background-image:linear-gradient(165deg,#0F0C0A 0%,#0B0908 55%,#080606 100%);}
+  .page{
+    box-shadow:
+      0 0 0 1px rgba(201,169,97,.24),
+      inset 0 1px 0 rgba(255,255,255,.05),
+      0 30px 70px -24px rgba(0,0,0,.75);
+  }
+}
+
   </style>
 </head>
 <body>
